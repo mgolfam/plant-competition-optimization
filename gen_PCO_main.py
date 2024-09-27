@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+# Define the objective function details (Ackley function for F23)
 def get_function_details(Function_name):
     if Function_name == 'F23':
         lb = -32.768
@@ -19,7 +20,7 @@ n = 20
 print(f'Number of initial plants = {n}')
 vmax = 10
 Noi = 200
-print(f'maximum number of algorithm''s iteration = {Noi}')
+print(f'maximum number of algorithms iteration = {Noi}')
 MaxPlantNumber = 1000
 print(f'Maximum of Plants Number = {MaxPlantNumber}')
 
@@ -50,23 +51,28 @@ while plantNumber <= MaxPlantNumber and iteration <= Noi:
     # Calculate fitness
     f = np.array([fobj(plants[i, :]) for i in range(plantNumber)])
     best.append(np.min(f))
+
     fn = f / np.linalg.norm(f)
     fitness = 1.0 / (1 + fn)
-    
+
     mx = np.max(fitness)
     mn = np.min(fitness)
+
     if mn == mx:
         fc = fitness / mx
     else:
         fc = (fitness - mn) / (mx - mn)
-    
-    # Sort fitness coefficients
-    sfc = np.sort(fc)[::-1]
-    survive = (fc >= sfc[max(0, plantNumber - n)])
-    newPlant = plants[survive, :]
-    plants = newPlant
-    plantNumber = newPlant.shape[0]
-    
+
+    # Sort fitness coefficients and determine which plants survive
+    sfc = np.sort(fc)[::-1]  # Sort in descending order
+    max_survivors = min(len(sfc), n)  # Ensure we only keep the best `n` plants
+    survive = fc >= sfc[max_survivors - 1]  # The `n` here corresponds to the initial number of plants
+
+    # Apply survival filtering BEFORE adding new seeds
+    plants = plants[survive, :]
+    v = v[survive]  # Filter corresponding plant sizes
+    plantNumber = plants.shape[0]  # Update plant number
+
     # Growth and seeding
     st = np.zeros(plantNumber)
     for i in range(plantNumber):
@@ -79,7 +85,7 @@ while plantNumber <= MaxPlantNumber and iteration <= Noi:
         dv = fc[i] * k * (np.log(non * vmax) - np.log(st[i]))
         v[i] = min(v[i] + dv, vmax)
     
-    # Seed production
+    # Seed production AFTER filtering
     NOS = np.floor(v + 1).astype(int)
     sumNos = np.sum(NOS)
     for i in range(plantNumber):
@@ -89,17 +95,22 @@ while plantNumber <= MaxPlantNumber and iteration <= Noi:
             seed = plants[i, :].copy()
             seed[RND] = temp
             plants = np.vstack([plants, seed])
-            v = np.append(v, np.random.rand())
-    
-    # Seed migration
+            v = np.append(v, np.random.rand())  # Update plant size array
+
+    # Seed migration AFTER filtering and seeding
     migrantSeedsNoOld = migrantSeedsNo
     migrantSeedsNo = int(miu * sumNos)
     migrantPlantOld = migrantPlant
-    migrantPlant = np.random.randint(plantNumber, plantNumber + sumNos, migrantSeedsNo)
-    for i in migrantPlant:
-        plants[i, :] = A + (B - A) * np.random.rand(1, dim)
-    
-    plantNumber = plants.shape[0]
+
+    # Ensure plants array has enough space before seed migration
+    plants = np.vstack([plants, np.zeros((migrantSeedsNo, dim))])  # Add space for migrant seeds
+    v = np.append(v, np.random.rand(migrantSeedsNo))  # Update plant size array for new migrant seeds
+
+    # Assign new random positions to migrant plants
+    for i in range(migrantSeedsNo):
+        plants[plantNumber + i, :] = A + (B - A) * np.random.rand(dim)  # Assign to the new rows
+
+    plantNumber += migrantSeedsNo  # Update plantNumber to reflect newly added plants
     iteration += 1
 
 # Plot results
