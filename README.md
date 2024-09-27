@@ -23,8 +23,8 @@ The code has been adapted and modified to suit the specific requirements of this
 
 ## Installation
 
-`git clone https://github.com/yourusername/PCO-Algorithm.git
-cd PCO-Algorithm`
+`git clone https://github.com/mgolfam/plant-competition-optimization.git
+cd plant-competition-optimization`
 
 `pip install -r requirements.txt`
 
