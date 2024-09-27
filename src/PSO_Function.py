@@ -2,6 +2,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def PSO_Function(A, B, psz, PsoIteration, dim, fobj):
+    """
+    Particle Swarm Optimization (PSO) Algorithm.
+
+    Parameters:
+    A (float): Lower bound of the search space.
+    B (float): Upper bound of the search space.
+    psz (int): Number of particles.
+    PsoIteration (int): Number of iterations.
+    dim (int): Dimensionality of the problem.
+    fobj (function): Objective function to minimize.
+
+    Returns:
+    tuple: Best fitness found, number of function calls, list of best fitness values at each iteration.
+    """
     # PSO parameters
     c1 = 1.0  # Cognitive coefficient
     c2 = 0.3  # Social coefficient
@@ -9,8 +23,6 @@ def PSO_Function(A, B, psz, PsoIteration, dim, fobj):
 
     # Step 1: Initialization
     pso = A + (B - A) * np.random.rand(psz, dim)  # Initial positions of particles
-    Best_particle = []
-    bestPso = []
     vp = np.random.normal(0, 1, (psz, dim))  # Initial velocities of particles
     PSO_Call = 0
 
@@ -21,8 +33,8 @@ def PSO_Function(A, B, psz, PsoIteration, dim, fobj):
     # Find the particle with the best fitness
     mn = np.min(f)
     index1 = np.argmin(f)
-    bestPso.append(mn)
-    Best_particle.append(pso[index1])
+    bestPso = [mn]
+    Best_particle = pso[index1]
     fitness = f
 
     # Initialize Gbest (Global Best)
@@ -61,27 +73,31 @@ def PSO_Function(A, B, psz, PsoIteration, dim, fobj):
     PSO_Best = np.min(bestPso)
     return PSO_Best, PSO_Call, bestPso
 
-# Sample Objective Function (e.g., Sphere function)
-def sphere_function(x):
-    return np.sum(x**2)
+def main():
+    # Sample Objective Function (e.g., Sphere function)
+    def sphere_function(x):
+        return np.sum(x**2)
 
-# Example usage of PSO_Function
-A = -10
-B = 10
-psz = 30  # Number of particles
-PsoIteration = 100  # Number of iterations
-dim = 2  # Dimensionality of the problem
+    # Example usage of PSO_Function
+    A = -10
+    B = 10
+    psz = 30  # Number of particles
+    PsoIteration = 100  # Number of iterations
+    dim = 2  # Dimensionality of the problem
 
-# Call the PSO function
-PSO_Best, PSO_Call, bestPso = PSO_Function(A, B, psz, PsoIteration, dim, sphere_function)
+    # Call the PSO function
+    PSO_Best, PSO_Call, bestPso = PSO_Function(A, B, psz, PsoIteration, dim, sphere_function)
 
-# Output the result
-print(f"Best fitness found: {PSO_Best}")
-print(f"Number of function calls: {PSO_Call}")
+    # Output the result
+    print(f"Best fitness found: {PSO_Best}")
+    print(f"Number of function calls: {PSO_Call}")
 
-# Plotting the convergence
-plt.plot(bestPso, 'b*-', linewidth=1, markeredgecolor='r', markersize=5)
-plt.xlabel('Iteration')
-plt.ylabel('Minimum Fitness')
-plt.title('Convergence of PSO Algorithm')
-plt.show()
+    # Plotting the convergence
+    plt.plot(bestPso, 'b*-', linewidth=1, markeredgecolor='r', markersize=5)
+    plt.xlabel('Iteration')
+    plt.ylabel('Minimum Fitness')
+    plt.title('Convergence of PSO Algorithm')
+    plt.show()
+
+if __name__ == "__main__":
+    main()

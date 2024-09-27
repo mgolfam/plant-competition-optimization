@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from functions_details import Get_Functions_details  # Import the details function from your file
+from src.functions_details import Get_Functions_details  # Import the details function from your file
 
 class PlantCompetitionOptimization:
     def __init__(self, function_name='F23', n=20, vmax=10, Noi=200, MaxPlantNumber=1000, dim=None):
@@ -104,7 +104,12 @@ class PlantCompetitionOptimization:
             iteration += 1
 
         self.best_fitness = best
-        return np.min(best)
+        # return np.min(best)
+        best_solution = plants[np.argmin(f)]  # Get the plant corresponding to the best fitness
+        best_fitness = np.min(f)  # Get the best fitness value
+        
+        return best_solution, best_fitness  # Return both
+
 
     def plot_convergence(self):
         plt.plot(self.best_fitness, 'b*-', linewidth=1, markeredgecolor='r', markersize=5)
