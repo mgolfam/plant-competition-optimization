@@ -1,16 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from functions_details import Get_Functions_details  # Import the details function from your file
 
 # Seed for reproducibility
 np.random.seed(42)
-
-# Define the objective function details (Ackley function for F23)
-def Get_Functions_details(Function_name):
-    lb = np.array([-15, -15])  # Example lower bounds
-    ub = np.array([30, 30])    # Example upper bounds
-    dim = 2                     # Example dimension
-    fobj = lambda x: -20 * np.exp(-0.2 * np.sqrt(0.5 * np.sum(x**2))) - np.exp(0.1 * np.sum(np.cos(2 * np.pi * x))) + 20 + np.exp(1)
-    return lb, ub, dim, fobj
 
 # Parameters and Initialization
 Function_name = 'F23'

@@ -1,5 +1,6 @@
 import numpy as np
 
+# Function to retrieve function details and corresponding bounds and dimensions
 def Get_Functions_details(F):
     switch = {
         'F1': (F1, -100, 100, 10),
@@ -30,6 +31,7 @@ def Get_Functions_details(F):
     fobj, lb, ub, dim = switch.get(F, (None, None, None, None))
     return lb, ub, dim, fobj
 
+# Objective functions F1 to F23
 def F1(x):
     return np.sum(x**2)
 
@@ -137,4 +139,3 @@ def F23(x):
 
 def Ufun(x, a, k, m):
     return k * ((x - a)**m) * (x > a) + k * ((-x - a)**m) * (x < (-a))
-
