@@ -2,126 +2,116 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Define the objective function details (Ackley function for F23)
-def get_function_details(Function_name):
-    if Function_name == 'F23':
-        lb = -32.768
-        ub = 32.768
-        dim = 2
-        
-        def fobj(x):
-            return -20 * np.exp(-0.2 * np.sqrt(0.5 * (x[0]**2 + x[1]**2))) - np.exp(0.5 * (np.cos(2 * np.pi * x[0]) + np.cos(2 * np.pi * x[1]))) + 20 + np.e
-        
-        return lb, ub, dim, fobj
+def Get_Functions_details(Function_name):
+    lb = np.array([-15, -15])  # Example lower bounds
+    ub = np.array([30, 30])    # Example upper bounds
+    dim = 2                     # Example dimension
+    fobj = lambda x: -20 * np.exp(-0.2 * np.sqrt(0.5 * np.sum(x**2))) - np.exp(0.1 * np.sum(np.cos(2 * np.pi * x))) + 20 + np.exp(1)
+    return lb, ub, dim, fobj
 
-# Initialize parameters
+# Parameters and Initialization
 Function_name = 'F23'
-print(f'Function_name = {Function_name}')
-n = 20
-print(f'Number of initial plants = {n}')
-vmax = 10
-Noi = 200
-print(f'maximum number of algorithms iteration = {Noi}')
-MaxPlantNumber = 1000
-print(f'Maximum of Plants Number = {MaxPlantNumber}')
+n = 20  # Initial number of plants
+vmax = 10  # Maximum plant size
+Noi = 200  # Number of iterations
+MaxPlantNumber = 1000  # Maximum number of plants
+maxPlant = n
+lb, ub, dim, fobj = Get_Functions_details(Function_name)
 
-# Get function details
-lb, ub, dim, fobj = get_function_details(Function_name)
-rmax = ub - lb
+rmax = np.max(ub - lb)  # Use max value of rmax as a scalar
 maxTeta = np.exp(-1)
-print(f'max Teta = {maxTeta}')
 teta = maxTeta
 k = 0.1
 miu = 0.05
+
 A = lb
 B = ub
 
-# Seeding (initialization)
+# Seeding, initialization
 plants = A + (B - A) * np.random.rand(n, dim)
-r = np.zeros(n)
 v = np.random.rand(n)
+r = np.zeros(n)
 plantNumber = n
 iteration = 1
 best = []
+x = plants
+
 migrantSeedsNo = 0
 migrantPlant = []
 
 # Main optimization loop
 while plantNumber <= MaxPlantNumber and iteration <= Noi:
-    
-    # Calculate fitness
+    # Fitness calculation
     f = np.array([fobj(plants[i, :]) for i in range(plantNumber)])
+    
+    # Calculate fitness coefficients
     best.append(np.min(f))
-
     fn = f / np.linalg.norm(f)
-    fitness = 1.0 / (1 + fn)
-
+    fitness = 1 / (1 + fn)
     mx = np.max(fitness)
     mn = np.min(fitness)
-
     if mn == mx:
         fc = fitness / mx
     else:
         fc = (fitness - mn) / (mx - mn)
 
-    # Sort fitness coefficients and determine which plants survive
-    sfc = np.sort(fc)[::-1]  # Sort in descending order
-    max_survivors = min(len(sfc), n)  # Ensure we only keep the best `n` plants
-    survive = fc >= sfc[max_survivors - 1]  # The `n` here corresponds to the initial number of plants
+    # Sort fitness and apply survival filtering
+    sfc = np.sort(fc)[::-1]
+    survive = (fc >= sfc[maxPlant - 1])
+    plants = plants[survive, :]  # Apply survival mask
+    v = v[survive]  # Update plant sizes for survivors
+    plantNumber = plants.shape[0]
 
-    # Apply survival filtering BEFORE adding new seeds
-    plants = plants[survive, :]
-    v = v[survive]  # Filter corresponding plant sizes
-    plantNumber = plants.shape[0]  # Update plant number
-
-    # Growth and seeding
+    # Growth phase
     st = np.zeros(plantNumber)
     for i in range(plantNumber):
-        r[i] = teta * rmax * np.exp(1 - (5 * v[i]) / vmax)
-        non = 0
+        r[i] = teta * rmax * np.exp(1 - (5 * v[i]) / vmax)  # Use rmax as scalar
+        non = 0  # Count of neighbors
         for j in range(plantNumber):
-            if np.linalg.norm(plants[i, :] - plants[j, :]) <= r[i]:
+            if np.sqrt(np.sum((plants[i, :] - plants[j, :])**2)) <= r[i]:
                 st[i] += v[j]
                 non += 1
+        
+        # Update plant size
         dv = fc[i] * k * (np.log(non * vmax) - np.log(st[i]))
-        v[i] = min(v[i] + dv, vmax)
+        if v[i] + dv < vmax:
+            v[i] += dv
+        else:
+            v[i] = vmax
     
-    # Seed production AFTER filtering
-    NOS = np.floor(v + 1).astype(int)
-    sumNos = np.sum(NOS)
+    # SEED PRODUCTION
+    sumNos = 0
+    NOS = np.zeros(plantNumber, dtype=int)
     for i in range(plantNumber):
+        NOS[i] = int(np.floor(v[i] + 1))
+        sumNos += NOS[i]
         for j in range(NOS[i]):
             RND = np.random.randint(dim)
-            temp = plants[i, RND] - r[i] + 2 * r[i] * np.random.rand()
+            Temp = (plants[i, RND] - r[i]) + 2 * r[i] * np.random.rand()
             seed = plants[i, :].copy()
-            seed[RND] = temp
-            plants = np.vstack([plants, seed])
-            v = np.append(v, np.random.rand())  # Update plant size array
+            seed[RND] = Temp
+            plants = np.vstack((plants, seed))
+            v = np.append(v, np.random.rand())  # Add seed sizes
 
-    # Seed migration AFTER filtering and seeding
+    # SEED MIGRATION
     migrantSeedsNoOld = migrantSeedsNo
-    migrantSeedsNo = int(miu * sumNos)
+    migrantSeedsNo = int(np.floor(miu * sumNos))
     migrantPlantOld = migrantPlant
-
-    # Ensure plants array has enough space before seed migration
-    plants = np.vstack([plants, np.zeros((migrantSeedsNo, dim))])  # Add space for migrant seeds
-    v = np.append(v, np.random.rand(migrantSeedsNo))  # Update plant size array for new migrant seeds
-
-    # Assign new random positions to migrant plants
+    migrantPlant = np.random.randint(0, plantNumber + sumNos, migrantSeedsNo)
+    
     for i in range(migrantSeedsNo):
-        plants[plantNumber + i, :] = A + (B - A) * np.random.rand(dim)  # Assign to the new rows
-
-    plantNumber += migrantSeedsNo  # Update plantNumber to reflect newly added plants
+        temp = A + (B - A) * np.random.rand(1, dim)
+        plants[migrantPlant[i], :] = temp
+    
+    plantNumber = plants.shape[0]
     iteration += 1
 
-# Plot results
+# Plotting the convergence
 plt.plot(best, 'b*-', linewidth=1, markeredgecolor='r', markersize=5)
 plt.xlabel('Iteration')
-plt.ylabel('Minimum')
+plt.ylabel('Minimum Fitness Value')
 plt.title("Algorithm's Convergence")
 plt.show()
 
-# Final results
-print(f'Minimum fitness: {np.min(best)}')
-print(f'Maximum fitness: {np.max(f)}')
-print(f'Maximum plant size: {np.max(v)}')
-print(f'Maximum neighborhood radius: {np.max(r)}')
+# Final Results
+print(f'Minimum fitness achieved: {np.min(best)}')
