@@ -1,6 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+# Seed for reproducibility
+np.random.seed(42)
+
 # Define the objective function details (Ackley function for F23)
 def Get_Functions_details(Function_name):
     lb = np.array([-15, -15])  # Example lower bounds
@@ -46,7 +49,7 @@ while plantNumber <= MaxPlantNumber and iteration <= Noi:
     
     # Calculate fitness coefficients
     best.append(np.min(f))
-    fn = f / np.linalg.norm(f)
+    fn = f / np.linalg.norm(f)  # Make sure norm is calculated in the same way as MATLAB
     fitness = 1 / (1 + fn)
     mx = np.max(fitness)
     mn = np.min(fitness)
