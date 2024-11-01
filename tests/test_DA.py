@@ -5,6 +5,7 @@ from src.algorithms.DA import DragonflyAlgorithm
 class TestDragonflyAlgorithm(unittest.TestCase):
 
     def setUp(self):
+        print('DA TEST')
         self.A = -10
         self.B = 10
         self.population_size = 30

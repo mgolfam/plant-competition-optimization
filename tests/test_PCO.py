@@ -5,6 +5,7 @@ from src.algorithms.PCO import PlantCompetitionOptimization
 class TestPCO(unittest.TestCase):
 
     def setUp(self):
+        print('PCO TEST')
         # Setup for the Plant Competition Optimization algorithm
         self.lb = 0
         self.ub = 10

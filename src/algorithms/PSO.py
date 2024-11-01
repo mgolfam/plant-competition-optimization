@@ -1,103 +1,96 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def PSO_Function(A, B, psz, PsoIteration, dim, fobj):
-    """
-    Particle Swarm Optimization (PSO) Algorithm.
+class ParticleSwarmOptimization:
+    def __init__(self, A, B, psz, PsoIteration, dim, fobj):
+        # Initialize PSO parameters
+        self.A = A  # Lower bound
+        self.B = B  # Upper bound
+        self.psz = psz  # Number of particles
+        self.PsoIteration = PsoIteration  # Number of iterations
+        self.dim = dim  # Dimensionality
+        self.fobj = fobj  # Objective function
+        self.c1 = 1.0  # Cognitive coefficient
+        self.c2 = 0.3  # Social coefficient
+        self.inertia = 0.8  # Inertia weight
+        self.best_fitness = []  # List to store the best fitness values over iterations
+        self.PSO_Call = 0  # Number of function calls
 
-    Parameters:
-    A (float): Lower bound of the search space.
-    B (float): Upper bound of the search space.
-    psz (int): Number of particles.
-    PsoIteration (int): Number of iterations.
-    dim (int): Dimensionality of the problem.
-    fobj (function): Objective function to minimize.
+    def run(self):
+        # Step 1: Initialization
+        np.random.seed(42)  # For reproducibility
+        pso = self.A + (self.B - self.A) * np.random.rand(self.psz, self.dim)  # Particle positions
+        vp = np.random.uniform(-1, 1, (self.psz, self.dim))  # Particle velocities
 
-    Returns:
-    tuple: Best fitness found, number of function calls, list of best fitness values at each iteration.
-    """
-    # PSO parameters
-    c1 = 1.0  # Cognitive coefficient
-    c2 = 0.3  # Social coefficient
-    inertia = 0.8  # Inertia weight
+        # Evaluate initial fitness
+        fitness = np.array([self.fobj(pso[i]) for i in range(self.psz)])
+        self.PSO_Call += self.psz
 
-    # Step 1: Initialization
-    pso = A + (B - A) * np.random.rand(psz, dim)  # Initial positions of particles
-    vp = np.random.normal(0, 1, (psz, dim))  # Initial velocities of particles
-    PSO_Call = 0
+        # Initialize Gbest and Pbest
+        Gbest_index = np.argmin(fitness)
+        Gbest_position = pso[Gbest_index].copy()
+        Gbest_fitness = fitness[Gbest_index]
+        Pbest = pso.copy()
+        Pbest_fitness = fitness.copy()
 
-    # Evaluate fitness for each particle
-    f = np.array([fobj(pso[i]) for i in range(psz)])
-    PSO_Call += psz
+        # Store the initial best fitness
+        self.best_fitness.append(Gbest_fitness)
 
-    # Find the particle with the best fitness
-    mn = np.min(f)
-    index1 = np.argmin(f)
-    bestPso = [mn]
-    Best_particle = pso[index1]
-    fitness = f
+        # Main PSO loop
+        for iteration in range(self.PsoIteration):
+            # Step 2.1: Update velocities and positions
+            r1, r2 = np.random.rand(2, self.psz, self.dim)
+            vp = (self.inertia * vp +
+                  self.c1 * r1 * (Pbest - pso) +
+                  self.c2 * r2 * (Gbest_position - pso))
+            pso = np.clip(pso + vp, self.A, self.B)  # Update positions and ensure within bounds
 
-    # Initialize Gbest (Global Best)
-    Gbest = np.argmin(fitness)
+            # Step 2.2: Evaluate fitness for updated positions
+            fitness = np.array([self.fobj(pso[i]) for i in range(self.psz)])
+            self.PSO_Call += self.psz
 
-    # Initialize Pbest (Personal Best)
-    Pbest = pso.copy()
-    Pbest_fitness = fitness.copy()
+            # Step 2.3: Update Pbest
+            update_mask = Pbest_fitness > fitness
+            Pbest[update_mask] = pso[update_mask]
+            Pbest_fitness[update_mask] = fitness[update_mask]
 
-    # Main PSO loop
-    for iteration in range(PsoIteration):
-        # Step 2.1: Find Gbest (best particle in the swarm)
-        Gbest = np.argmin(fitness)
-        Best_Fitness = fitness[Gbest]
-        bestPso.append(Best_Fitness)
-        Best_particle = pso[Gbest]
+            # Step 2.4: Update Gbest
+            Gbest_index = np.argmin(Pbest_fitness)
+            Gbest_position = Pbest[Gbest_index].copy()
+            Gbest_fitness = Pbest_fitness[Gbest_index]
 
-        # Step 2.2: Update Pbest (personal best positions)
-        update_mask = Pbest_fitness > fitness
-        Pbest[update_mask] = pso[update_mask]
-        Pbest_fitness[update_mask] = fitness[update_mask]
+            # Store the best fitness for plotting
+            self.best_fitness.append(Gbest_fitness)
 
-        # Step 2.3: Update velocities and positions of particles
-        r1, r2 = np.random.rand(2, psz, dim)
-        vp = (inertia * vp +
-              c1 * r1 * (Pbest - pso) +
-              c2 * r2 * (pso[Gbest] - pso))
-        pso += vp
+        # Return the best fitness and the number of function calls
+        return Gbest_position, Gbest_fitness
 
-        # Step 2.4: Evaluate fitness for updated positions
-        f = np.array([fobj(pso[i]) for i in range(psz)])
-        fitness = f
-        PSO_Call += psz
+    def plot_convergence(self):
+        # Plot the convergence graph
+        plt.plot(self.best_fitness, 'b*-', linewidth=1, markeredgecolor='r', markersize=5)
+        plt.xlabel('Iteration')
+        plt.ylabel('Minimum Fitness')
+        plt.title("PSO Algorithm's Convergence")
+        plt.show()
 
-    # Find the best result after all iterations
-    PSO_Best = np.min(bestPso)
-    return PSO_Best, PSO_Call, bestPso
-
-def main():
+# Example usage
+if __name__ == "__main__":
     # Sample Objective Function (e.g., Sphere function)
     def sphere_function(x):
         return np.sum(x**2)
 
-    # Example usage of PSO_Function
+    # Initialize PSO with parameters
     A = -10
     B = 10
     psz = 30  # Number of particles
     PsoIteration = 100  # Number of iterations
     dim = 2  # Dimensionality of the problem
 
-    # Call the PSO function
-    PSO_Best, PSO_Call, bestPso = PSO_Function(A, B, psz, PsoIteration, dim, sphere_function)
+    # Create PSO instance and run
+    pso = ParticleSwarmOptimization(A, B, psz, PsoIteration, dim, sphere_function)
+    best_position, best_fitness = pso.run()
+    print(f"Best fitness found: {best_fitness}")
+    print(f"Best position: {best_position}")
 
-    # Output the result
-    print(f"Best fitness found: {PSO_Best}")
-    print(f"Number of function calls: {PSO_Call}")
-
-    # Plotting the convergence
-    plt.plot(bestPso, 'b*-', linewidth=1, markeredgecolor='r', markersize=5)
-    plt.xlabel('Iteration')
-    plt.ylabel('Minimum Fitness')
-    plt.title("PSO Algorithm's Convergence")
-    plt.show()
-
-if __name__ == "__main__":
-    main()
+    # Plot the convergence
+    pso.plot_convergence()

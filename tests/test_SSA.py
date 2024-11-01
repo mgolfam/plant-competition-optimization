@@ -5,6 +5,7 @@ from src.algorithms.SSA import SalpSwarmAlgorithm  # Correct import path
 
 class TestSSA(unittest.TestCase):
     def setUp(self):
+        print('SSA TEST')
         self.lb = -10
         self.ub = 10
         self.dim = 5

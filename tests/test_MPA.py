@@ -5,6 +5,7 @@ from src.algorithms.MPA import MarinePredatorsAlgorithm
 class TestMarinePredatorsAlgorithm(unittest.TestCase):
 
     def setUp(self):
+        print('MPA TEST')
         self.lb = -10
         self.ub = 10
         self.dim = 5

@@ -5,6 +5,7 @@ from src.algorithms.GOA import GrasshopperOptimizationAlgorithm
 class TestGOA(unittest.TestCase):
 
     def setUp(self):
+        print('GOA TEST')
         self.A = -10
         self.B = 10
         self.population_size = 30

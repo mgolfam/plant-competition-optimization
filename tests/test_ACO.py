@@ -5,6 +5,7 @@ from src.algorithms.ACO import AntColonyOptimization
 class TestACO(unittest.TestCase):
 
     def setUp(self):
+        print('ACO TEST')
         # Setup a small test problem for the ACO algorithm
         self.distances = np.array([
             [0, 2, 2, 5, 7],

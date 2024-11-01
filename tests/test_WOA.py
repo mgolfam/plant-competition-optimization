@@ -5,6 +5,7 @@ from src.algorithms.WOA import WhaleOptimizationAlgorithm
 class TestWhaleOptimizationAlgorithm(unittest.TestCase):
 
     def setUp(self):
+        print('WOA TEST')
         self.lb = -10
         self.ub = 10
         self.dim = 5

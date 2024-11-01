@@ -1,5 +1,6 @@
 import numpy as np
 import random
+import matplotlib.pyplot as plt
 
 class GeneticAlgorithm:
     def __init__(self, A, B, population_size, generations, dim, fobj, mutation_rate=0.01, crossover_rate=0.7):
@@ -29,7 +30,8 @@ class GeneticAlgorithm:
         self.population = A + (B - A) * np.random.rand(population_size, dim)
         self.best_individual = None
         self.best_fitness = float('inf')
-        
+        self.convergence = []  # List to store best fitness values over generations
+
     def _evaluate_population(self):
         # Evaluates the fitness of the population
         fitness = np.array([self.fobj(ind) for ind in self.population])
@@ -37,7 +39,8 @@ class GeneticAlgorithm:
 
     def _select_parents(self, fitness):
         # Roulette wheel selection
-        probabilities = fitness / fitness.sum()
+        probabilities = 1 / (fitness + 1e-8)  # Inverse proportional for minimization
+        probabilities /= probabilities.sum()
         selected_indices = np.random.choice(np.arange(self.population_size), size=2, p=probabilities)
         return self.population[selected_indices[0]], self.population[selected_indices[1]]
 
@@ -84,11 +87,21 @@ class GeneticAlgorithm:
                 self.best_fitness = min_fitness
                 self.best_individual = self.population[min_index].copy()
                 
+            # Track best fitness for plotting
+            self.convergence.append(self.best_fitness)
+
             # Create new population
             self.population = self._create_new_population(fitness)
             
         return self.best_individual, self.best_fitness
 
+    def plot_convergence(self):
+        # Plot the convergence graph
+        plt.plot(self.convergence, 'b*-', linewidth=1, markeredgecolor='r', markersize=5)
+        plt.xlabel('Generation')
+        plt.ylabel('Best Fitness')
+        plt.title("Genetic Algorithm's Convergence")
+        plt.show()
 
 # Sample Objective Function (e.g., Sphere function)
 def sphere_function(x):
@@ -108,3 +121,6 @@ if __name__ == "__main__":
     # Output the result
     print(f"Best individual found: {best_individual}")
     print(f"Best fitness: {best_fitness}")
+
+    # Plot the convergence
+    ga.plot_convergence()

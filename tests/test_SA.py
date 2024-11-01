@@ -5,6 +5,7 @@ from src.algorithms.SA import SimulatedAnnealing
 class TestSimulatedAnnealing(unittest.TestCase):
 
     def setUp(self):
+        print('SA TEST')
         self.A = -10
         self.B = 10
         self.initial_temperature = 1000

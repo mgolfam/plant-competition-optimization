@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 class SimulatedAnnealing:
     def __init__(self, A, B, initial_temperature, cooling_rate, max_iterations, dim, fobj):
@@ -22,25 +23,23 @@ class SimulatedAnnealing:
         self.dim = dim
         self.fobj = fobj
         
-        # Initialize the current solution with random values
+        # Initialize the current and best solutions
         self.current_solution = A + (B - A) * np.random.rand(dim)
         self.best_solution = self.current_solution.copy()
         self.current_fitness = fobj(self.current_solution)
         self.best_fitness = self.current_fitness
+        
+        # To track convergence
+        self.convergence = []
 
     def _acceptance_probability(self, new_fitness):
-        # If the new solution is better, accept it
         if new_fitness < self.current_fitness:
             return 1.0
-        # Otherwise, accept it with a probability that depends on the temperature
         return np.exp((self.current_fitness - new_fitness) / self.temperature)
 
     def _generate_neighbor(self):
-        # Generate a new solution by modifying the current solution slightly
         neighbor = self.current_solution + np.random.uniform(-1, 1, self.dim)
-        # Ensure the neighbor is within bounds
-        neighbor = np.clip(neighbor, self.A, self.B)
-        return neighbor
+        return np.clip(neighbor, self.A, self.B)
 
     def run(self):
         """
@@ -50,25 +49,32 @@ class SimulatedAnnealing:
         tuple: Best solution found and its fitness.
         """
         for iteration in range(self.max_iterations):
-            # Generate a neighboring solution
             new_solution = self._generate_neighbor()
             new_fitness = self.fobj(new_solution)
             
-            # Decide whether to accept the new solution
             if np.random.rand() < self._acceptance_probability(new_fitness):
                 self.current_solution = new_solution
                 self.current_fitness = new_fitness
             
-            # Update the best solution if the current solution is better
             if self.current_fitness < self.best_fitness:
                 self.best_solution = self.current_solution.copy()
                 self.best_fitness = self.current_fitness
+            
+            # Track the best fitness for convergence plot
+            self.convergence.append(self.best_fitness)
             
             # Cool down the temperature
             self.temperature *= self.cooling_rate
         
         return self.best_solution, self.best_fitness
 
+    def plot_convergence(self):
+        # Plot the convergence graph
+        plt.plot(self.convergence, 'b*-', linewidth=1, markeredgecolor='r', markersize=5)
+        plt.xlabel('Iteration')
+        plt.ylabel('Best Fitness')
+        plt.title("Simulated Annealing's Convergence")
+        plt.show()
 
 # Sample Objective Function (e.g., Sphere function)
 def sphere_function(x):
@@ -89,3 +95,6 @@ if __name__ == "__main__":
     # Output the result
     print(f"Best solution found: {best_solution}")
     print(f"Best fitness: {best_fitness}")
+
+    # Plot the convergence
+    sa.plot_convergence()
