@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from src.PCO_main import PlantCompetitionOptimization
+from src.algorithms.PCO import PlantCompetitionOptimization
 
 class TestPCO(unittest.TestCase):
 

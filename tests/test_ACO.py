@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from src.ACO_Function import AntColonyOptimization
+from src.algorithms.ACO import AntColonyOptimization
 
 class TestACO(unittest.TestCase):
 

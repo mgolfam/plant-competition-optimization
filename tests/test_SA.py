@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from src.SA_Function import SimulatedAnnealing
+from src.algorithms.SA import SimulatedAnnealing
 
 class TestSimulatedAnnealing(unittest.TestCase):
 

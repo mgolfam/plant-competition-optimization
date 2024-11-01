@@ -1,7 +1,7 @@
 import numpy as np
 import unittest
 
-from src.SSA_Function import SalpSwarmAlgorithm  # Correct import path
+from src.algorithms.SSA import SalpSwarmAlgorithm  # Correct import path
 
 class TestSSA(unittest.TestCase):
     def setUp(self):

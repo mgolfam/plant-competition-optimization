@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from src.functions_details import Get_Functions_details  # Import the details function from your file
+from src.problems_functions.functions_details import Get_Functions_details  # Import the details function from your file
 
 class PlantCompetitionOptimization:
     def __init__(self, function_name='F23', n=20, vmax=10, Noi=200, MaxPlantNumber=1000, dim=None):

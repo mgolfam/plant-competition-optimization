@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from src.DA_Function import DragonflyAlgorithm
+from src.algorithms.DA import DragonflyAlgorithm
 
 class TestDragonflyAlgorithm(unittest.TestCase):
 

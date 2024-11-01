@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from src.GOA_Function import GrasshopperOptimizationAlgorithm
+from src.algorithms.GOA import GrasshopperOptimizationAlgorithm
 
 class TestGOA(unittest.TestCase):
 

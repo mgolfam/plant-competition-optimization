@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from src.MPA_Function import MarinePredatorsAlgorithm
+from src.algorithms.MPA import MarinePredatorsAlgorithm
 
 class TestMarinePredatorsAlgorithm(unittest.TestCase):
 

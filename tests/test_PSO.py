@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from src.PSO_Function import PSO_Function
+from src.algorithms.PSO import PSO_Function
 
 class TestPSO(unittest.TestCase):
 

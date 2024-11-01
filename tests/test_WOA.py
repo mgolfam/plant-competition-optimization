@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from src.WOA_Function import WhaleOptimizationAlgorithm
+from src.algorithms.WOA import WhaleOptimizationAlgorithm
 
 class TestWhaleOptimizationAlgorithm(unittest.TestCase):
 

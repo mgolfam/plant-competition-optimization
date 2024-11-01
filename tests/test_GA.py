@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from src.GA_Function import GeneticAlgorithm
+from src.algorithms.GA import GeneticAlgorithm
 
 class TestGeneticAlgorithm(unittest.TestCase):
 
