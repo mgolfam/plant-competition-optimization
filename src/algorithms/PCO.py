@@ -115,7 +115,7 @@ class PlantCompetitionOptimization:
         plt.plot(self.best_fitness, 'b*-', linewidth=1, markeredgecolor='r', markersize=5)
         plt.xlabel('Iteration')
         plt.ylabel('Minimum Fitness Value')
-        plt.title("Algorithm's Convergence")
+        plt.title("PCO Algorithm's Convergence")
         plt.show()
 
 # Example usage:

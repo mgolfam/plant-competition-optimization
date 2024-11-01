@@ -96,7 +96,7 @@ def main():
     plt.plot(bestPso, 'b*-', linewidth=1, markeredgecolor='r', markersize=5)
     plt.xlabel('Iteration')
     plt.ylabel('Minimum Fitness')
-    plt.title('Convergence of PSO Algorithm')
+    plt.title("PSO Algorithm's Convergence")
     plt.show()
 
 if __name__ == "__main__":
