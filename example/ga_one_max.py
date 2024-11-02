@@ -3,31 +3,27 @@ import random
 import matplotlib.pyplot as plt
 np.random.seed(42)  # Set a fixed seed for reproducibility
 
-
 class GeneticAlgorithm:
-    def __init__(self, A, B, population_size, generations, dim, fobj, mutation_rate=0.01, crossover_rate=0.7):
-        self.A = A
-        self.B = B
+    def __init__(self, population_size, generations, dim, mutation_rate=0.01, crossover_rate=0.7):
         self.population_size = population_size
         self.generations = generations
         self.dim = dim
-        self.fobj = fobj
         self.mutation_rate = mutation_rate
         self.crossover_rate = crossover_rate
         
-        # Initializing population with random values between A and B
-        self.population = A + (B - A) * np.random.rand(population_size, dim)
+        # Initialize population with random binary vectors
+        self.population = np.random.randint(2, size=(population_size, dim))
         self.best_individual = None
-        self.best_fitness = float('inf')
+        self.best_fitness = -float('inf')  # Maximization problem
         self.convergence = []  # List to store best fitness values over generations
 
     def _evaluate_population(self):
-        fitness = np.array([self.fobj(ind) for ind in self.population])
+        # Fitness is the number of ones in the vector
+        fitness = np.array([np.sum(ind) for ind in self.population])
         return fitness
 
     def _select_parents(self, fitness):
-        probabilities = 1 / (fitness + 1e-8)  # Inverse proportional for minimization
-        probabilities /= probabilities.sum()
+        probabilities = fitness / (fitness.sum() + 1e-8)  # Proportional for maximization
         selected_indices = np.random.choice(np.arange(self.population_size), size=2, p=probabilities)
         return self.population[selected_indices[0]], self.population[selected_indices[1]]
 
@@ -43,7 +39,7 @@ class GeneticAlgorithm:
     def _mutate(self, offspring):
         for i in range(self.dim):
             if np.random.rand() < self.mutation_rate:
-                offspring[i] = self.A + (self.B - self.A) * np.random.rand()
+                offspring[i] = 1 - offspring[i]  # Flip the bit (0 becomes 1, 1 becomes 0)
         return offspring
 
     def _create_new_population(self, fitness):
@@ -60,11 +56,11 @@ class GeneticAlgorithm:
             fitness = self._evaluate_population()
             
             # Update best individual
-            min_fitness = np.min(fitness)
-            min_index = np.argmin(fitness)
-            if min_fitness < self.best_fitness:
-                self.best_fitness = min_fitness
-                self.best_individual = self.population[min_index].copy()
+            max_fitness = np.max(fitness)
+            max_index = np.argmax(fitness)
+            if max_fitness > self.best_fitness:
+                self.best_fitness = max_fitness
+                self.best_individual = self.population[max_index].copy()
             
             # Print the best fitness and individual of the current generation
             print(f"Generation {generation + 1}: Best Fitness = {self.best_fitness}, Best Individual = {self.best_individual}")
@@ -84,19 +80,13 @@ class GeneticAlgorithm:
         plt.title("Genetic Algorithm's Convergence")
         plt.show()
 
-# Sample Objective Function (e.g., Sphere function)
-def sphere_function(x):
-    return np.sum(x**2)
-
-# Example usage
+# Example usage for "Max One" Problem
 if __name__ == "__main__":
-    A = -10
-    B = 10
-    population_size = 30  # Number of individuals in the population
-    generations = 100  # Number of generations (iterations)
-    dim = 5  # Dimensionality of the problem
+    population_size = 50  # Number of individuals in the population
+    generations = 1000  # Number of generations (iterations)
+    dim = 40  # Length of the binary vector
 
-    ga = GeneticAlgorithm(A, B, population_size, generations, dim, sphere_function)
+    ga = GeneticAlgorithm(population_size, generations, dim)
     best_individual, best_fitness = ga.run()
 
     # Output the final result
