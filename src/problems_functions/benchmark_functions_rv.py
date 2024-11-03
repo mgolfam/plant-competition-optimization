@@ -1,8 +1,8 @@
 import numpy as np
 
-class OptimizationFunction:
+class BenchmarkFunctions:
     def __init__(self, search_domain, num_local_minima, global_minimum):
-        self.search_domain = search_domain
+        self.search_domain = np.array(search_domain)
         self.num_local_minima = num_local_minima
         self.global_minimum = global_minimum
 
@@ -10,83 +10,156 @@ class OptimizationFunction:
         """Ensure x is within the specified search domain."""
         return np.clip(x, self.search_domain[0], self.search_domain[1])
 
+    # 1. Branin Function
     def branin(self, x):
         x = self.enforce_domain(x)
-        x1, x2 = x[0], x[1]
-        a = 1
+        a = 1.0
         b = 5.1 / (4 * np.pi**2)
         c = 5 / np.pi
-        r = 6
-        s = 10
+        r = 6.0
+        s = 10.0
         t = 1 / (8 * np.pi)
-        return a * (x2 - b * x1**2 + c * x1 - r)**2 + s * (1 - t) * np.cos(x1) + s
+        return a * (x[1] - b * x[0]**2 + c * x[0] - r)**2 + s * (1 - t) * np.cos(x[0]) + s
 
+    # 2. Easom Function
     def easom(self, x):
         x = self.enforce_domain(x)
-        x1, x2 = x[0], x[1]
-        return -np.cos(x1) * np.cos(x2) * np.exp(-((x1 - np.pi)**2 + (x2 - np.pi)**2))
+        return -np.cos(x[0]) * np.cos(x[1]) * np.exp(-(x[0] - np.pi)**2 - (x[1] - np.pi)**2)
 
+    # 3. Goldstein & Price Function
     def goldstein_price(self, x):
         x = self.enforce_domain(x)
-        x1, x2 = x[0], x[1]
-        part1 = 1 + (x1 + x2 + 1)**2 * (19 - 14*x1 + 3*x1**2 - 14*x2 + 6*x1*x2 + 3*x2**2)
-        part2 = 30 + (2*x1 - 3*x2)**2 * (18 - 32*x1 + 12*x1**2 + 48*x2 - 36*x1*x2 + 27*x2**2)
-        return part1 * part2
+        return (1 + (x[0] + x[1] + 1)**2 * (19 - 14*x[0] + 3*x[0]**2 - 14*x[1] + 6*x[0]*x[1] + 3*x[1]**2)) * \
+               (30 + (2*x[0] - 3*x[1])**2 * (18 - 32*x[0] + 12*x[0]**2 + 48*x[1] - 36*x[0]*x[1] + 27*x[1]**2))
 
+    # 4. Six-Hump Camel Back Function
     def six_hump_camel_back(self, x):
         x = self.enforce_domain(x)
-        x1, x2 = x[0], x[1]
-        return (4 - 2.1 * x1**2 + (x1**4) / 3) * x1**2 + x1 * x2 + (-4 + 4 * x2**2) * x2**2
+        term1 = (4 - 2.1 * x[0]**2 + (x[0]**4) / 3) * x[0]**2
+        term2 = x[0] * x[1]
+        term3 = (-4 + 4 * x[1]**2) * x[1]**2
+        return term1 + term2 + term3
 
+    # 5. Shubert Function
     def shubert(self, x):
         x = self.enforce_domain(x)
-        x1, x2 = x[0], x[1]
-        sum1 = sum(i * np.cos((i + 1) * x1 + i) for i in range(1, 6))
-        sum2 = sum(i * np.cos((i + 1) * x2 + i) for i in range(1, 6))
+        sum1 = sum(i * np.cos((i + 1) * x[0] + i) for i in range(1, 6))
+        sum2 = sum(i * np.cos((i + 1) * x[1] + i) for i in range(1, 6))
         return sum1 * sum2
 
+    # 6. Shekel Function
+    def shekel(self, x):
+        x = self.enforce_domain(x)
+        m = 10
+        a = np.array([[4.0, 4.0, 4.0, 4.0],
+                      [1.0, 1.0, 1.0, 1.0],
+                      [8.0, 8.0, 8.0, 8.0],
+                      [6.0, 6.0, 6.0, 6.0],
+                      [3.0, 7.0, 3.0, 7.0],
+                      [2.0, 9.0, 2.0, 9.0],
+                      [5.0, 5.0, 3.0, 3.0],
+                      [8.0, 1.0, 8.0, 1.0],
+                      [6.0, 2.0, 6.0, 2.0],
+                      [7.0, 3.6, 7.0, 3.6]])
+        c = np.array([0.1, 0.2, 0.2, 0.4, 0.4, 0.6, 0.3, 0.7, 0.5, 0.5])
+        return -np.sum([1.0 / (np.sum((x - a[i])**2) + c[i]) for i in range(m)])
+
+    # 7. Schwefel Function
     def schwefel(self, x):
         x = self.enforce_domain(x)
         return 418.9829 * len(x) - np.sum(x * np.sin(np.sqrt(np.abs(x))))
 
+    # 8. Griewank Function
     def griewank(self, x):
         x = self.enforce_domain(x)
-        sum_part = np.sum(x**2) / 4000
-        prod_part = np.prod(np.cos(x / np.sqrt(np.arange(1, len(x) + 1))))
-        return sum_part - prod_part + 1
+        return 1 + np.sum(x**2 / 4000) - np.prod(np.cos(x / np.sqrt(np.arange(1, len(x) + 1))))
 
+    # 9. Rastrigin Function
+    def rastrigin(self, x):
+        x = self.enforce_domain(x)
+        return 10 * len(x) + np.sum(x**2 - 10 * np.cos(2 * np.pi * x))
+
+    # 10. Ackley Function
     def ackley(self, x):
         x = self.enforce_domain(x)
-        n = len(x)
-        return -20 * np.exp(-0.2 * np.sqrt(np.sum(x**2) / n)) - np.exp(np.sum(np.cos(2 * np.pi * x)) / n) + 20 + np.e
+        return -20 * np.exp(-0.2 * np.sqrt(np.mean(x**2))) - np.exp(np.mean(np.cos(2 * np.pi * x))) + 20 + np.e
 
-    def sphere(self, x):
+    # 11. Beale Function
+    def beale(self, x):
         x = self.enforce_domain(x)
-        return np.sum(x**2)
+        return (1.5 - x[0] + x[0] * x[1])**2 + (2.25 - x[0] + x[0] * x[1]**2)**2 + (2.625 - x[0] + x[0] * x[1]**3)**2
 
-    def schaffer(self, x):
+    # 12. Bohachevsky Function
+    def bohachevsky(self, x):
+        x = self.enforce_domain(x)
+        return x[0]**2 + 2 * x[1]**2 - 0.3 * np.cos(3 * np.pi * x[0]) - 0.4 * np.cos(4 * np.pi * x[1]) + 0.7
+
+    # 13. Booth Function
+    def booth(self, x):
+        x = self.enforce_domain(x)
+        return (x[0] + 2 * x[1] - 7)**2 + (2 * x[0] + x[1] - 5)**2
+
+    # 14. Colville Function
+    def colville(self, x):
+        x = self.enforce_domain(x)
+        return 100 * (x[1] - x[0]**2)**2 + (1 - x[0])**2 + 90 * (x[3] - x[2]**2)**2 + (1 - x[2])**2 + \
+               10.1 * ((x[1] - 1)**2 + (x[3] - 1)**2) + 19.8 * (x[1] - 1) * (x[3] - 1)
+
+    # 15. Himmelblau Function
+    def himmelblau(self, x):
+        x = self.enforce_domain(x)
+        return (x[0]**2 + x[1] - 11)**2 + (x[0] + x[1]**2 - 7)**2
+
+    # 16. Three-Hump Camel Function
+    def three_hump_camel(self, x):
+        x = self.enforce_domain(x)
+        return 2 * x[0]**2 - 1.05 * x[0]**4 + (x[0]**6) / 6 + x[0] * x[1] + x[1]**2
+
+    # 17. Matyas Function
+    def matyas(self, x):
+        x = self.enforce_domain(x)
+        return 0.26 * (x[0]**2 + x[1]**2) - 0.48 * x[0] * x[1]
+
+    # 18. Hartmann 3 Function
+    def hartmann_3(self, x):
+        x = self.enforce_domain(x)
+        alpha = np.array([1.0, 1.2, 3.0, 3.2])
+        A = np.array([[3.0, 10, 30],
+                      [0.1, 10, 35],
+                      [3.0, 10, 30],
+                      [0.1, 10, 35]])
+        P = 10**-4 * np.array([[3689, 1170, 2673],
+                               [4699, 4387, 7470],
+                               [1091, 8732, 5547],
+                               [381, 5743, 8828]])
+        return -np.sum([alpha[i] * np.exp(-np.sum(A[i] * (x - P[i])**2)) for i in range(4)])
+
+    # 19. Hartmann 6 Function
+    def hartmann_6(self, x):
+        x = self.enforce_domain(x)
+        alpha = np.array([1.0, 1.2, 3.0, 3.2])
+        A = np.array([[10, 3, 17, 3.5, 1.7, 8],
+                      [0.05, 10, 17, 0.1, 8, 14],
+                      [3.0, 3.5, 1.7, 10, 17, 8],
+                      [17, 8, 0.05, 10, 0.1, 14]])
+        P = 10**-4 * np.array([[1312, 1696, 5569, 124, 8283, 5886],
+                               [2329, 4135, 8307, 3736, 1004, 9991],
+                               [2348, 1415, 3522, 2883, 3047, 6650],
+                               [4047, 8828, 8732, 5743, 1091, 381]])
+        return -np.sum([alpha[i] * np.exp(-np.sum(A[i] * (x - P[i])**2)) for i in range(4)])
+
+    # 20. Schaffer Function
+    def schaffer_function(self, x):
         x = self.enforce_domain(x)
         x1, x2 = x[0], x[1]
         numerator = (np.sin(np.sqrt(x1**2 + x2**2)))**2 - 0.5
         denominator = (1 + 0.001 * (x1**2 + x2**2))**2
         return 0.5 + numerator / denominator
 
-    def shekel(self, x, a, c):
-        x = self.enforce_domain(x)
-        m = a.shape[1]  # Number of maxima
-        result = -np.sum(1 / (np.sum((x - a[:, j])**2) + c[j]) for j in range(m))
-        return result
-
 # Example Usage
-shekel_function = OptimizationFunction(
-    search_domain=(np.array([-10] * 4), np.array([10] * 4)),  # Example for 4 dimensions
-    num_local_minima=10,
-    global_minimum=np.array([4, 4, 4, 4])
-)
+search_domain = [(-5, -5), (10, 15)]  # Example search domain for 2D functions
+functions = BenchmarkFunctions(search_domain, num_local_minima=5, global_minimum=(1, 1))
 
-# Define parameters for the Shekel function
-a = np.array([[4, 4, 4, 4], [1, 1, 1, 1], [8, 8, 8, 8], [6, 6, 6, 6]]).T
-c = np.array([0.1, 0.2, 0.4, 0.8])
-
-x = np.array([4, 4, 4, 4])  # Example input
-print("Shekel Function Value:", shekel_function.shekel(x, a, c))
+x = np.array([1.0, 2.0])  # Example input
+print("Branin Function Value:", functions.branin(x))
+print("Shekel Function Value:", functions.shekel(x))
