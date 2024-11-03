@@ -1,4 +1,4 @@
-from src.problems_functions import benchmark_functions  # Your benchmark functions
+from src.problems_functions import benchmark_functions, functions_details  # Your benchmark functions
 from src.tools.csv_manager import CSVManager  # Using CSVManager for handling CSV operations
 from src.algorithms import (
     PCO, GA, PSO, SA, GOA, DA, SSA, WOA, MPA  # Import all algorithms
@@ -14,7 +14,9 @@ def run_all_algorithms():
     ]
     csv_manager.write_headers(headers)
 
-    functions = inspect.getmembers(benchmark_functions, inspect.isfunction)
+    benchmark_funcs = inspect.getmembers(benchmark_functions, inspect.isfunction)
+    details_funcs = inspect.getmembers(functions_details, inspect.isfunction)
+    functions = benchmark_funcs + details_funcs
 
     algorithms = {
         "PCO": lambda func: PCO.PlantCompetitionOptimization(
