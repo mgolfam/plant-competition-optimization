@@ -69,17 +69,18 @@ class AntColonyOptimization:
         return best_solution, best_cost
 
 # Example: Distance matrix for 5 cities
-distances = np.array([
-    [0, 2, 2, 5, 7],
-    [2, 0, 4, 8, 2],
-    [2, 4, 0, 1, 3],
-    [5, 8, 1, 0, 6],
-    [7, 2, 3, 6, 0]
-], dtype=float)  # Ensure this matrix is of type float
+if __name__ == "__main__":
+    distances = np.array([
+        [0, 2, 2, 5, 7],
+        [2, 0, 4, 8, 2],
+        [2, 4, 0, 1, 3],
+        [5, 8, 1, 0, 6],
+        [7, 2, 3, 6, 0]
+    ], dtype=float)  # Ensure this matrix is of type float
 
-# Initialize ACO and run
-aco = AntColonyOptimization(distances, num_ants=10, num_iterations=100)
-best_solution, best_cost = aco.run()
+    # Initialize ACO and run
+    aco = AntColonyOptimization(distances, num_ants=10, num_iterations=100)
+    best_solution, best_cost = aco.run()
 
-print(f"Best solution: {best_solution}")
-print(f"Best cost: {best_cost}")
+    print(f"Best solution: {best_solution}")
+    print(f"Best cost: {best_cost}")

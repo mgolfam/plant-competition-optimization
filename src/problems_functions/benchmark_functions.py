@@ -128,3 +128,10 @@ def ackley(x):
 # 21. Sphere Function
 def sphere(x):
     return np.sum(x**2)
+
+def schaffer_function(x):
+    # Assuming x is a 1D array with two elements: [x1, x2]
+    x1, x2 = x[0], x[1]
+    numerator = (np.sin(np.sqrt(x1**2 + x2**2)))**2 - 0.5
+    denominator = (1 + 0.001 * (x1**2 + x2**2))**2
+    return 0.5 + numerator / denominator
