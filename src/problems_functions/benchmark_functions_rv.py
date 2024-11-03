@@ -163,3 +163,127 @@ functions = BenchmarkFunctions(search_domain, num_local_minima=5, global_minimum
 x = np.array([1.0, 2.0])  # Example input
 print("Branin Function Value:", functions.branin(x))
 print("Shekel Function Value:", functions.shekel(x))
+
+benchmark_configs = [
+    {
+        "name": "Branin",
+        "search_domain": [(-5, 0), (10, 15)],
+        "num_local_minima": 3,
+        "global_minimum": [(np.pi, 2.275), (9.42478, 2.475), (-3.14159, 12.275)]
+    },
+    {
+        "name": "Easom",
+        "search_domain": [(-100, -100), (100, 100)],
+        "num_local_minima": "Several",
+        "global_minimum": [(np.pi, np.pi)]
+    },
+    {
+        "name": "Goldstein & Price",
+        "search_domain": [(-2, -2), (2, 2)],
+        "num_local_minima": "Several",
+        "global_minimum": [(0, -1)]
+    },
+    {
+        "name": "Six-Hump Camel Back",
+        "search_domain": [(-3, -2), (3, 2)],
+        "num_local_minima": 6,
+        "global_minimum": [(-0.0898, 0.7126), (0.0898, -0.7126)]
+    },
+    {
+        "name": "Shubert",
+        "search_domain": [(-10, -10), (10, 10)],
+        "num_local_minima": 760,
+        "global_minimum": "Multiple with f(x*) ≈ -186.7309"
+    },
+    {
+        "name": "Shekel",
+        "search_domain": [(0, 0, 0, 0), (10, 10, 10, 10)],
+        "num_local_minima": 10,
+        "global_minimum": "Depends on a and c configuration"
+    },
+    {
+        "name": "Schwefel",
+        "search_domain": [(-500, -500), (500, 500)],
+        "num_local_minima": "Many",
+        "global_minimum": "420.9687 * n with f(x*) = 0"
+    },
+    {
+        "name": "Griewank",
+        "search_domain": [(-600, -600), (600, 600)],
+        "num_local_minima": "Many",
+        "global_minimum": [(0, 0)]
+    },
+    {
+        "name": "Rastrigin",
+        "search_domain": [(-5.12, -5.12), (5.12, 5.12)],
+        "num_local_minima": "Many",
+        "global_minimum": [(0, 0)]
+    },
+    {
+        "name": "Ackley",
+        "search_domain": [(-32.768, -32.768), (32.768, 32.768)],
+        "num_local_minima": "Many",
+        "global_minimum": [(0, 0)]
+    },
+    {
+        "name": "Beale",
+        "search_domain": [(-4.5, -4.5), (4.5, 4.5)],
+        "num_local_minima": "Several",
+        "global_minimum": [(3, 0.5)]
+    },
+    {
+        "name": "Bohachevsky",
+        "search_domain": [(-100, -100), (100, 100)],
+        "num_local_minima": "None",
+        "global_minimum": [(0, 0)]
+    },
+    {
+        "name": "Booth",
+        "search_domain": [(-10, -10), (10, 10)],
+        "num_local_minima": "None",
+        "global_minimum": [(1, 3)]
+    },
+    {
+        "name": "Colville",
+        "search_domain": [(-10, -10, -10, -10), (10, 10, 10, 10)],
+        "num_local_minima": "Several",
+        "global_minimum": [(1, 1, 1, 1)]
+    },
+    {
+        "name": "Himmelblau",
+        "search_domain": [(-5, -5), (5, 5)],
+        "num_local_minima": 4,
+        "global_minimum": "f(x*) = 0 at several points"
+    },
+    {
+        "name": "Three-Hump Camel",
+        "search_domain": [(-5, -5), (5, 5)],
+        "num_local_minima": "None",
+        "global_minimum": [(0, 0)]
+    },
+    {
+        "name": "Matyas",
+        "search_domain": [(-10, -10), (10, 10)],
+        "num_local_minima": "None",
+        "global_minimum": [(0, 0)]
+    },
+    {
+        "name": "Hartmann 3",
+        "search_domain": [(0, 0, 0), (1, 1, 1)],
+        "num_local_minima": "Multiple",
+        "global_minimum": "Complex to state"
+    },
+    {
+        "name": "Hartmann 6",
+        "search_domain": [(0, 0, 0, 0, 0, 0), (1, 1, 1, 1, 1, 1)],
+        "num_local_minima": "Multiple",
+        "global_minimum": "Complex to state"
+    },
+    {
+        "name": "Schaffer",
+        "search_domain": [(-100, -100), (100, 100)],
+        "num_local_minima": "Many",
+        "global_minimum": [(0, 0)]
+    }
+]
+
