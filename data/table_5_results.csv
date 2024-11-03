@@ -1,0 +1,68 @@
+Function Name,Definition,Search Domain,Number of Local Minima,Global Minimum,Algorithm,Avg Result,Execution Time (s),Error Message
+F1,Your function definition here,Your search domain,Number of minima,Global minimum,PCO,3.950866252302283e-06,0.5533685684204102,
+F1,Your function definition here,Your search domain,Number of minima,Global minimum,GA,0.6765366790591093,0.289276123046875,
+F1,Your function definition here,Your search domain,Number of minima,Global minimum,PSO,1.4459005905274733e-22,0.023164987564086914,
+F1,Your function definition here,Your search domain,Number of minima,Global minimum,SA,0.5,0.0023369789123535156,
+F1,Your function definition here,Your search domain,Number of minima,Global minimum,GOA,0.06216246487084014,1.6014788150787354,
+F1,Your function definition here,Your search domain,Number of minima,Global minimum,DA,0.90124925664182,0.348705530166626,
+F1,Your function definition here,Your search domain,Number of minima,Global minimum,SSA,1.1158840973633713e-14,0.054146528244018555,
+F1,Your function definition here,Your search domain,Number of minima,Global minimum,WOA,N/A,N/A,too many values to unpack (expected 2)
+F1,Your function definition here,Your search domain,Number of minima,Global minimum,MPA,N/A,N/A,too many values to unpack (expected 2)
+F10,Your function definition here,Your search domain,Number of minima,Global minimum,PCO,0.005226558922423852,0.6491813659667969,
+F10,Your function definition here,Your search domain,Number of minima,Global minimum,GA,3.7065698407691916,0.31899499893188477,
+F10,Your function definition here,Your search domain,Number of minima,Global minimum,PSO,1.9845902698989448e-11,0.06027340888977051,
+F10,Your function definition here,Your search domain,Number of minima,Global minimum,SA,4.253654026568412,0.0034520626068115234,
+F10,Your function definition here,Your search domain,Number of minima,Global minimum,GOA,1.8318074330569627,1.591719150543213,
+F10,Your function definition here,Your search domain,Number of minima,Global minimum,DA,3.665841283256022,0.3750312328338623,
+F10,Your function definition here,Your search domain,Number of minima,Global minimum,SSA,2.987823717326421e-07,0.09405207633972168,
+F10,Your function definition here,Your search domain,Number of minima,Global minimum,WOA,N/A,N/A,too many values to unpack (expected 2)
+F10,Your function definition here,Your search domain,Number of minima,Global minimum,MPA,N/A,N/A,too many values to unpack (expected 2)
+F11,Your function definition here,Your search domain,Number of minima,Global minimum,PCO,1.1551488210415073e-08,0.6362631320953369,
+F11,Your function definition here,Your search domain,Number of minima,Global minimum,GA,0.03073894935313548,0.3082106113433838,
+F11,Your function definition here,Your search domain,Number of minima,Global minimum,PSO,0.0,0.056414127349853516,
+F11,Your function definition here,Your search domain,Number of minima,Global minimum,SA,0.1768223807026471,0.0062220096588134766,
+F11,Your function definition here,Your search domain,Number of minima,Global minimum,GOA,0.00863411329311048,1.6218147277832031,
+F11,Your function definition here,Your search domain,Number of minima,Global minimum,DA,0.07895116648636658,0.3877902030944824,
+F11,Your function definition here,Your search domain,Number of minima,Global minimum,SSA,1.1102230246251565e-16,0.08623218536376953,
+F11,Your function definition here,Your search domain,Number of minima,Global minimum,WOA,N/A,N/A,too many values to unpack (expected 2)
+F11,Your function definition here,Your search domain,Number of minima,Global minimum,MPA,N/A,N/A,too many values to unpack (expected 2)
+F12,Your function definition here,Your search domain,Number of minima,Global minimum,PCO,2.859910127553434e-06,0.8887588977813721,
+F12,Your function definition here,Your search domain,Number of minima,Global minimum,GA,3.139810747317865,0.4907402992248535,
+F12,Your function definition here,Your search domain,Number of minima,Global minimum,PSO,1.96719236998691e-22,0.1508781909942627,
+F12,Your function definition here,Your search domain,Number of minima,Global minimum,SA,15.734813457334306,0.007018327713012695,
+F12,Your function definition here,Your search domain,Number of minima,Global minimum,GOA,0.010527557900067135,1.660066843032837,
+F12,Your function definition here,Your search domain,Number of minima,Global minimum,DA,0.7322474437030829,0.47022128105163574,
+F12,Your function definition here,Your search domain,Number of minima,Global minimum,SSA,5.8756836570722e-15,0.18953394889831543,
+F12,Your function definition here,Your search domain,Number of minima,Global minimum,WOA,N/A,N/A,too many values to unpack (expected 2)
+F12,Your function definition here,Your search domain,Number of minima,Global minimum,MPA,N/A,N/A,too many values to unpack (expected 2)
+F13,Your function definition here,Your search domain,Number of minima,Global minimum,PCO,5.375970543471096e-08,0.8376622200012207,
+F13,Your function definition here,Your search domain,Number of minima,Global minimum,GA,0.0025334404639364115,0.4748988151550293,
+F13,Your function definition here,Your search domain,Number of minima,Global minimum,PSO,1.523084257346079e-20,0.13648438453674316,
+F13,Your function definition here,Your search domain,Number of minima,Global minimum,SA,0.17500000000000002,0.0069310665130615234,
+F13,Your function definition here,Your search domain,Number of minima,Global minimum,GOA,0.017819485211403634,1.6599881649017334,
+F13,Your function definition here,Your search domain,Number of minima,Global minimum,DA,0.5179941882091929,0.45845675468444824,
+F13,Your function definition here,Your search domain,Number of minima,Global minimum,SSA,6.341362873884665e-16,0.1722400188446045,
+F13,Your function definition here,Your search domain,Number of minima,Global minimum,WOA,N/A,N/A,too many values to unpack (expected 2)
+F13,Your function definition here,Your search domain,Number of minima,Global minimum,MPA,N/A,N/A,too many values to unpack (expected 2)
+F14,Your function definition here,Your search domain,Number of minima,Global minimum,PCO,N/A,N/A,index 20 is out of bounds for axis 0 with size 20
+F14,Your function definition here,Your search domain,Number of minima,Global minimum,GA,12.788144401458483,0.41809678077697754,
+F14,Your function definition here,Your search domain,Number of minima,Global minimum,PSO,12.670505811135557,0.12035942077636719,
+F14,Your function definition here,Your search domain,Number of minima,Global minimum,SA,12.70018911126252,0.005335330963134766,
+F14,Your function definition here,Your search domain,Number of minima,Global minimum,GOA,12.670594673083524,1.6919844150543213,
+F14,Your function definition here,Your search domain,Number of minima,Global minimum,DA,13.23513018543972,0.44161152839660645,
+F14,Your function definition here,Your search domain,Number of minima,Global minimum,SSA,12.670505811135852,0.1605982780456543,
+F14,Your function definition here,Your search domain,Number of minima,Global minimum,WOA,N/A,N/A,too many values to unpack (expected 2)
+F14,Your function definition here,Your search domain,Number of minima,Global minimum,MPA,N/A,N/A,too many values to unpack (expected 2)
+F15,Your function definition here,Your search domain,Number of minima,Global minimum,PCO,N/A,N/A,index 2 is out of bounds for axis 0 with size 2
+F15,Your function definition here,Your search domain,Number of minima,Global minimum,GA,N/A,N/A,index 2 is out of bounds for axis 0 with size 2
+F15,Your function definition here,Your search domain,Number of minima,Global minimum,PSO,N/A,N/A,index 2 is out of bounds for axis 0 with size 2
+F15,Your function definition here,Your search domain,Number of minima,Global minimum,SA,N/A,N/A,index 2 is out of bounds for axis 0 with size 2
+F15,Your function definition here,Your search domain,Number of minima,Global minimum,GOA,N/A,N/A,index 2 is out of bounds for axis 0 with size 2
+F15,Your function definition here,Your search domain,Number of minima,Global minimum,DA,N/A,N/A,index 2 is out of bounds for axis 0 with size 2
+F15,Your function definition here,Your search domain,Number of minima,Global minimum,SSA,N/A,N/A,index 2 is out of bounds for axis 0 with size 2
+F15,Your function definition here,Your search domain,Number of minima,Global minimum,WOA,N/A,N/A,index 2 is out of bounds for axis 0 with size 2
+F15,Your function definition here,Your search domain,Number of minima,Global minimum,MPA,N/A,N/A,index 2 is out of bounds for axis 0 with size 2
+F16,Your function definition here,Your search domain,Number of minima,Global minimum,PCO,-1.0316246849944952,0.5585634708404541,
+F16,Your function definition here,Your search domain,Number of minima,Global minimum,GA,0.692839842539562,0.2778198719024658,
+F16,Your function definition here,Your search domain,Number of minima,Global minimum,PSO,-1.0316284534898776,0.01606297492980957,
+F16,Your function definition here,Your search domain,Number of minima,Global minimum,SA,0.3739583333333334,0.002212047576904297,
